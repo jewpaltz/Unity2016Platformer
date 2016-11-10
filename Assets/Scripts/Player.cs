@@ -7,6 +7,8 @@ public class Player : MonoBehaviour {
     public float maxSpeed = 3;
     public float jumpForce = 5;
 
+    private bool isDucking = false;
+
     private Vector3 startPosition;
     private new Rigidbody2D rigidbody2D;
 
@@ -32,11 +34,23 @@ public class Player : MonoBehaviour {
             rigidbody2D.velocity += Vector2.up * jumpForce;
         }
 
-        if(Input.GetAxis("Vertical") < 0)
+        // Duck if needed
+        if (Input.GetAxis("Vertical") < 0 && !isDucking)
         {
-            transform.localScale *= .5f;
+            var s = transform.localScale;
+            s.y *= .7f;
+            transform.localScale = s;
+            isDucking = true;
+        }
+        if (Input.GetAxis("Vertical") >= 0 && isDucking)
+        {
+            var s = transform.localScale;
+            s.y /= .7f;
+            transform.localScale = s;
+            isDucking = false;
         }
 
+        // Flip to look in right direction
         if (rigidbody2D.velocity.x > 0)
         {
             transform.rotation = new Quaternion(0, 0, 0, 0);
