@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System;
-using UnityStandardAssets.CrossPlatformInput;
 
 public class Player : MonoBehaviour {
     const float DEAD_ZONE_HEIGHT = -2;
@@ -26,24 +25,24 @@ public class Player : MonoBehaviour {
             Die();
         }
 
-        var x_force = CrossPlatformInputManager.GetAxis("Horizontal");
+        var x_force = Input.GetAxis("Horizontal");
         rigidbody2D.velocity += Vector2.right * x_force;
         rigidbody2D.velocity = Vector2.ClampMagnitude(rigidbody2D.velocity,  maxSpeed);
 
-        if ( CrossPlatformInputManager.GetButtonDown("Jump") && rigidbody2D.velocity.y == 0)
+        if (Input.GetButtonDown("Jump") && rigidbody2D.velocity.y == 0)
         {
             rigidbody2D.velocity += Vector2.up * jumpForce;
         }
 
         // Duck if needed
-        if ( CrossPlatformInputManager.GetAxis("Vertical") < 0 && !isDucking)
+        if (Input.GetAxis("Vertical") < 0 && !isDucking)
         {
             var s = transform.localScale;
             s.y *= .7f;
             transform.localScale = s;
             isDucking = true;
         }
-        if ( CrossPlatformInputManager.GetAxis("Vertical") >= 0 && isDucking)
+        if (Input.GetAxis("Vertical") >= 0 && isDucking)
         {
             var s = transform.localScale;
             s.y /= .7f;
